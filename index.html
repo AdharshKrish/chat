@@ -6,19 +6,15 @@
 </head>
 
 <body>
-    <!-- <input type="text" id="chat"> -->
-<!-- <div style="padding:40px 10%;width:80%"> -->
-    <div class="input-group mb-3" >
-        <input type="text" id="chat" class="form-control" placeholder="Enter text here...">
+<div class="container" style="padding-top: 50px">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" id="chat" placeholder="Enter text here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" id="publish-button" type="button" id="button-addon2">Send</button>
+            <button class="btn btn-outline-secondary" id="publish-button" type="button" id="button-addon2">Send</button>
         </div>
     </div>
-<!-- </div> -->
-    <!-- <input id="publish-button" type="submit" value="Send"/> -->
-<!-- <div style="padding:40px 5%;width:95%"> -->
     <ul class="list-group" id="globe"></ul>
-<!-- </div> -->
+</div>
 </body>
 
 <script src="pubnub.4.21.6.min.js"></script>
