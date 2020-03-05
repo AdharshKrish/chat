@@ -30,7 +30,7 @@ const input = document.getElementById("chat");
 button.addEventListener('click', () => {
     let d = new Date();
     pubnub.publish({
-        channel : 'time-publish-example-channel',
+        channel : 'koottu-arattai',
         message: {
             mytime: (d.getHours()>12?d.getHours()-12:d.getHours())+':'+d.getMinutes()+':'+d.getSeconds()+'&emsp;'+d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear(),
             chat: input.value
@@ -48,7 +48,7 @@ input.addEventListener("keyup", function(event) {
 });
 
 pubnub.subscribe({
-    channels: ['time-publish-example-channel']
+    channels: ['koottu-arattai']
 });
 
 pubnub.addListener({
