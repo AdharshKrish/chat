@@ -88,9 +88,24 @@ pubnub.subscribe({
 
 pubnub.addListener({
     message: function(event) {
-        window.globe.innerHTML += '<div class="list-group-item list-group-item-action"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1"><span class="badge badge-primary badge-pill">'+event.message.myname+'</span></h5><small class="text-muted">'+event.message.mytime+'</small></div><p class="mb-1">'+event.message.chat+'</p></div>';
+        window.globe.innerHTML = '<div class="list-group-item list-group-item-action"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1"><span class="badge badge-primary badge-pill">'+event.message.myname+'</span></h5><small class="text-muted">'+event.message.mytime+'</small></div><p class="mb-1">'+event.message.chat+'</p></div>' + window.globe.innerHTML;
     }
 });
+
+pubnub.history(
+    {
+      channel: 'koottu-arattai',
+      count: 30,
+      stringifiedTimeToken: true,
+    },
+    function (status, response) {
+      let msgs = response.messages;
+      for (let i in msgs) {
+        msg = msgs[i];
+        window.globe.innerHTML = '<div class="list-group-item list-group-item-action"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1"><span class="badge badge-primary badge-pill">'+msg.entry.myname+'</span></h5><small class="text-muted">'+msg.entry.mytime+'</small></div><p class="mb-1">'+msg.entry.chat+'</p></div>' + window.globe.innerHTML;
+      }
+    }
+  );
 
 
 </script>
