@@ -4,10 +4,31 @@
     <title>Global Chat</title>
     <link rel="stylesheet" href="bootstrap4.css">
     <link rel="icon" href="favicon.ico">
+
+    <style>
+        #logged{
+            display:none;
+        }
+    </style>
 </head>
 
 <body>
-<div class="container" style="padding-top: 50px">
+
+
+
+<div class="jumbotron" id="login">
+    <form>
+        <div class="form-group">
+            <h1 style="font-family: 'Segoe UI';text-align: center;">Welcome!</h1><br>
+            <label for="exampleInputEmail1">Enter your nickname</label>
+            <input id="nick" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <small class="form-text text-muted">This name will be displayed before your message. Press enter</small>
+        </div>
+        <button type="submit" id="enter" class="btn btn-primary" hidden>Enter</button>
+    </form>
+</div>
+
+<div class="container" style="padding-top: 50px" id="logged">
     <div class="input-group mb-3">
         <input type="text" class="form-control" id="chat" placeholder="Enter text here..." aria-label="Recipient's username" aria-describedby="basic-addon2">
         <div class="input-group-append">
@@ -16,6 +37,8 @@
     </div>
     <ul class="list-group" id="globe"></ul>
 </div>
+<script src="jquery.min.js"></script>
+<script src="bootstrap4.js"></script>
 </body>
 
 <script src="pubnub.4.21.6.min.js"></script>
@@ -24,7 +47,18 @@ const pubnub = new PubNub({
     publishKey: "pub-c-61c84398-283c-4923-a72e-e6804586a45a",
     subscribeKey: "sub-c-5c18f472-5eb1-11ea-b7ea-f2f107c29c38"
 });
+let name;
+window.enter.addEventListener('click',()=>{
 
+    if(window.nick.value!=""){
+        name = window.nick.value;
+        login.style.display = 'none';
+        logged.style.display = 'block';
+    }else{
+        alert("Please enter a nickname")
+    }
+
+})
 const button = document.getElementById('publish-button');
 const input = document.getElementById("chat");
 button.addEventListener('click', () => {
@@ -32,6 +66,7 @@ button.addEventListener('click', () => {
     pubnub.publish({
         channel : 'koottu-arattai',
         message: {
+            myname: name,
             mytime: (d.getHours()>12?d.getHours()-12:d.getHours())+':'+d.getMinutes()+':'+d.getSeconds()+'&emsp;'+d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear(),
             chat: input.value
         }
@@ -53,7 +88,7 @@ pubnub.subscribe({
 
 pubnub.addListener({
     message: function(event) {
-        window.globe.innerHTML += '<li class="list-group-item d-flex justify-content-between align-items-center">'+event.message.chat+'<span class="badge badge-primary badge-pill">'+event.message.mytime+'</span></li>';
+        window.globe.innerHTML += '<div class="list-group-item list-group-item-action"><div class="d-flex w-100 justify-content-between"><h5 class="mb-1"><span class="badge badge-primary badge-pill">'+event.message.myname+'</span></h5><small class="text-muted">'+event.message.mytime+'</small></div><p class="mb-1">'+event.message.chat+'</p></div>';
     }
 });
 
